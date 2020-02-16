@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - qrcode_reader (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - qrcode_reader (from `.symlinks/plugins/qrcode_reader/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  qrcode_reader:
+    :path: ".symlinks/plugins/qrcode_reader/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  qrcode_reader: 09b34d43b4c08fe5b63a6e56c96789bcea7b9148
+
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+
+COCOAPODS: 1.8.4
