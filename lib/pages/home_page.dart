@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:qrscaner/bloc/scans_bloc.dart';
 import 'package:qrscaner/pages/direcciones_page.dart';
 import 'package:qrscaner/pages/mapa_page.dart';
-
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:qrscaner/providers/db_provider.dart';
+import 'package:qrscaner/utils/scans_util.dart' as utils;
 
 
 class HomePage extends StatefulWidget {
@@ -13,6 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final scansBloc = ScansBloc();
   int currentPage = 0;
 
   @override
@@ -24,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.delete), 
             onPressed: (){
-              
+              scansBloc.borraTodosScans();
             }
           )
         ]
@@ -35,9 +39,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(Icons.filter_center_focus),
-        onPressed: (){
-          _qrScann();
-        },
+        onPressed: _qrScann
       ),
       
     );
@@ -79,16 +81,24 @@ class _HomePageState extends State<HomePage> {
 
   void _qrScann() async {
 
-    String barcodeScanRes = '';
+    //geo:40.66175814219636,-73.96199598750003
+    //http://google.com.ar
+    String futureString = '';
+
     try {
-       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#000000", "Cancel", false, ScanMode.QR);
+       futureString = await QRCodeReader().scan();
+
     } catch (e) {
-      barcodeScanRes = e.toString();
-    }
+      futureString = e.toString();
+    }   
 
-    if(barcodeScanRes != null){
-      print(".--------------------------------- TNEMOS INFORMACION ------------------------$barcodeScanRes");
-    }
+    if(futureString != null){
+      ScanModel nuevoScan =  ScanModel(valor: futureString);
+      
+      scansBloc.agregarScans(nuevoScan);
 
+      utils.abrirScanModel(context, nuevoScan);
+
+    }
   }
 }
